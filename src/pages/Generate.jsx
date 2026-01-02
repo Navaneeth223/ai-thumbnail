@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { generateThumbnail } from "../api";
 import promptTemplates from "../data/promptTemplates";
+import Thumbnail3D from "../components/Thumbnail3D";
+import useGsapIntro from "../hooks/useGsapIntro";
 
 export default function Generate() {
+  const containerRef = useRef(null);
+  useGsapIntro(containerRef);
+
   const [prompt, setPrompt] = useState("");
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -16,7 +21,10 @@ export default function Generate() {
   }
 
   return (
-    <div style={{ padding: "20px", maxWidth: "800px", margin: "auto" }}>
+    <div
+      ref={containerRef}
+      style={{ padding: "20px", maxWidth: "900px", margin: "auto" }}
+    >
       <h2>AI Thumbnail Generator</h2>
 
       {/* Prompt Templates */}
@@ -58,15 +66,17 @@ export default function Generate() {
         {loading ? "Generating..." : "Generate Thumbnail"}
       </button>
 
-      {/* Result */}
+      {/* 3D Result */}
       {image && (
-        <div style={{ marginTop: "20px" }}>
-          <h3>Result</h3>
-          <img src={image} alt="Thumbnail" width="512" />
-          <br /><br />
-          <a href={image} download>
-            <button>Download</button>
-          </a>
+        <div style={{ marginTop: "30px" }}>
+          <h3>3D Preview</h3>
+          <Thumbnail3D image={image} />
+
+          <div style={{ textAlign: "center", marginTop: "15px" }}>
+            <a href={image} download>
+              <button>Download</button>
+            </a>
+          </div>
         </div>
       )}
     </div>
