@@ -44,3 +44,14 @@ function GlowParticles() {
     </points>
   );
 }
+const isMobile = window.innerWidth < 768;
+
+const particles = useMemo(() => {
+  const count = isMobile ? 80 : 200; // 👈 BIG win
+  const positions = new Float32Array(count * 3);
+
+  for (let i = 0; i < count * 3; i++) {
+    positions[i] = (Math.random() - 0.5) * 10;
+  }
+  return positions;
+}, []);
